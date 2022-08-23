@@ -1,12 +1,12 @@
 # FROM python
-# WORKDIR python_project 
+# WORKDIR python_project
 # COPY ./python_project/ .
 # RUN pip install -r requirement.txt
-# CMD python app.py 
+# CMD python app.py
 
 FROM python:3.7
+COPY . /app
 WORKDIR /app
-COPY ./python_project .
 RUN /usr/local/bin/python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 EXPOSE 5000
