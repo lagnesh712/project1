@@ -1,18 +1,29 @@
 version: '3.3'
 
 services:
+  web_server:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - flaskapp
+
   db:
     image: postgres:13-alpine
     container_name: flaskapp-db
     # ports:
     #   - "5432:5432"
+    volumes:
+      - db_volume:/var/lib/todo.db
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
       - POSTGRESQL_VOLUME_DIR=/bitnami/postgresql
       - PGDATA=/bitnami/postgresql/data
-    
 
   flaskapp:
     build: .
@@ -23,3 +34,6 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
     depends_on:
       - db
+
+volumes:
+  db_volume:
